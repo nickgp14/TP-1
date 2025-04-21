@@ -1,6 +1,6 @@
 # TP-1
 Reglas del equipo:
-1-Respetar
+1-Respetar.
 2-
 3-
 4-
