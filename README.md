@@ -1,2 +1,7 @@
 # TP-1
-Tarea#1 de taller de programación
+Reglas del equipo:
+1-
+2-
+3-
+4-
+5-
