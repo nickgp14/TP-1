@@ -107,10 +107,10 @@ def validarGeneroAux(genero):
     return genero
 def existenciaCarne(bdEstudiantes,carne):
     """
-    Funcionamiento: Verificar si el carné ingresado existe ya dentro de la base de datos o no.
+    Funcionamiento: Verificar si el carné generado existe ya dentro de la base de datos o no.
     -Entradas
     bdEstudiantes: Lista con las listas de cada estudiante.
-    carne: Carné ingresado por el usuario.
+    carne: Carné generado automáticamente.
     -Salidas
     True o False: Retorna True si el carné ya existe y False si es un carné único.
     """
@@ -119,6 +119,14 @@ def existenciaCarne(bdEstudiantes,carne):
             return True
     return False
 def existenciaCorreo(bdEstudiantes,correo):
+     """
+    Funcionamiento: Verificar si el correo generado existe ya dentro de la base de datos o no.
+    -Entradas
+    bdEstudiantes: Lista con las listas de cada estudiante.
+    correo: Correo generado automáticamente.
+    -Salidas
+    True o False: Retorna True si el correo ya existe y False si es un carné único.
+    """
     for estudiante in bdEstudiantes:
         if estudiante[3]==correo:
             return True
