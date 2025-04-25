@@ -1,25 +1,86 @@
+#Elaborado por:
+#
 import re
-bdEstudiantes = [[("Juan","Pérez","Mora"), True, "2021021234", "jperez1234@estudiantec.cr", (85,47,70,65.7,65.7)]]
-
-def registrarEstudiante(bdEstudiantes):
+from funciones import *
+bdEstudiantes=[]
+def menu():
+    print("1. Crear Base de Datos dinámica")
+    print("2. Registrar un estudiante")
+    print("3. Generar reporte HTML y .csv")
+    print("4. Respaldar en XML")
+    print("5. Reporte por género(.docx)")
+    print("6. Gestionar curva")
+    print("7. Envio de correos")
+    print("8. Aplazados en almenos 2 exámenes(.pdf)")
+    print("9. Estadística por generación")
+    print("10.Reporte por sede con buen rendimiento")
+    print("11.Salir")
+    opcion=int(input("Ingrese la opción requerida: "))
+    if opcion>=1 and opcion<=11:
+        if opcion==1:
+            print("En proceso")
+        elif opcion==2:
+            registrarEstudiantesES()
+        elif opcion==3:
+            print("En proceso")
+        elif opcion==4:
+            print("En proceso")
+        elif opcion==5:
+            print("En proceso")
+        elif opcion==6:
+            print("En proceso")
+        elif opcion==7:
+            print("En proceso")
+        elif opcion==8:
+            print("En proceso")
+        elif opcion==9:
+            print("En proceso")
+        elif opcion==10:
+            reporteBuenRendimientoES()
+        else:
+            return
+    else:
+        print("Opción inválida, indique una de las anteriores.")
+    menu()
+def registrarEstudiantesAux(nombre,apellido1,apellido2,genero,carne,correo,nota1,nota2,nota3):
+    """
+    Funcionamiento: Toma los datos proporcionados y los coloca en una tupla para mayor facilidad de manejo.
+    -Entradas
+    nombre(str): Nombre del estudiante, ya validado.
+    apellido1(str):Primer apellido del estudiante, ya validado.
+    apellido2(str):Segundo apellido del estudiante, ya validado.
+    genero(booleano): True si es masculino y False si es femenino.
+    carne(str): Número de carné del estudiante, ya validado.
+    correo(str): Correo institucional del estudiante, ya validado.
+    nota1(float): Nota de la primera evaluación, ya validada.
+    nota2(float):Nota de la segunda evaluación, ya validada.
+    nota3(float): Nota de la segunda evaluación, ya validada.
+    -Salidas
+    registrarEstudiante(función): Retorna a la función principal una tupla de datos para registrar al estudiante en la base de datos.
+    """
+    nombreCompleto=(nombre,apellido1,apellido2)
+    notas=(nota1,nota2,nota3)#sacarPromedio(nota1,nota2,nota3)
+    return registrarEstudiante(nombreCompleto,genero,carne,correo,notas,bdEstudiantes)
+def registrarEstudiantesES():
     """
     -Funcionamiento: Solicitar al usuario los datos del estudiante a registrar y validar con expresiones regulares
     -Entradas
-    genero: Género del estudiante 1(para femenino) y 2(para masculino), ingresado por el usuario.
-    nombre: Nombre del estudiante, ingresado por el usuario.
-    apellido1: Primer apellido del estudiante, ingresado por el usuario.
-    apellido2:Segundo apellido del estudiante, ingresado por el usuario.
-    carne: Número de carné del estudiante, ingresado por el usuario.
-    correo:Correo institucional del estudiante, ingresado por el usuario.
+    nombre(str): Nombre del estudiante, ingresado por el usuario.
+    apellido1(str): Primer apellido del estudiante, ingresado por el usuario.
+    apellido2(str):Segundo apellido del estudiante, ingresado por el usuario.
+    genero(int): Género del estudiante 1(para masculino) y 2(para femenino), ingresado por el usuario.
+    carne(str): Número de carné del estudiante, ingresado por el usuario.
+    correo(str):Correo institucional del estudiante, ingresado por el usuario.
     -Salidas
-    genero:
-    nombre:Nombre del estudiante con la primera letra en mayúscula.
-    apellido1: Primer apellido del estudiante con la primera letra en mayúscula.
-    carne:Carné del estudiante ya validado en el formato correcto.
-    correo:Correo del estudiante ya validado en el formato correcto.
+    nombre(str):Nombre del estudiante con la primera letra en mayúscula.
+    apellido1(str): Primer apellido del estudiante con la primera letra en mayúscula.
+    apellido2(str): Segundo apellido del estudiante con la primera letra en mayúscula.
+    genero(booleano):El género como True para masculino y False para femenino.
+    carne(str):Carné del estudiante ya validado en el formato correcto.
+    correo(str):Correo del estudiante ya validado en el formato correcto.
     """
     while True:
-        nombre=input("Ingrese nombre: ").strip().capitalize() #Se utiliza strip como medida preventiva para evitar errores por espacios vacíos.
+        nombre=input("Ingrese el nombre: ").strip().capitalize() #Se utiliza strip como medida preventiva para evitar errores por espacios vacíos.
         if re.match("[A-za-zÁÉÍÓÚáéíóúñÑ']+",nombre):
             break #Si el nombre tiene el formato adecuado, se rompe y solicita el siguiente dato
         else:
@@ -36,12 +97,19 @@ def registrarEstudiante(bdEstudiantes):
             break
         else:
             print("Solo letras y apóstrofe permitido.")
-    nombreCompleto= nombre, apellido1,apellido2
-    genero=input("¿Cuál es su género?\n1.Femenino.\n2.Masculino.\nIngrese según corresponda: ")
-    while genero!="1" and genero!="2":
-        print("Género no válido, ingrese 1 o 2.")
-        genero=input("¿Cuál es su género?\n1.Femenino.\n2.Masculino.\nIngrese según corresponda: ")
-    genero=validarGeneroAux(genero)
+    while True:
+        try:
+            genero=int(input("¿Cuál es su género?\n1.Masculino.\n2.Femenino.\nIngrese según corresponda: "))
+            if validarGenero(genero):
+                if genero==1:
+                    genero=True
+                else:
+                    genero=False
+                break
+            else:
+                print("El número no es válido.")
+        except ValueError:
+            print("Debe ingresar un valor numérico")
     while True:
         carne=input("Ingrese el carné(sin espacios, ni guiones): ")
         if re.match ("\d{10}",carne):
@@ -87,67 +155,87 @@ def registrarEstudiante(bdEstudiantes):
                 break
         except ValueError:
             print("Debe ingresar un valor numérico.")
-    #notas=#funcion que calcula nota final(debería devolver tupla)
-    nuevoEstudiante=[nombreCompleto,carne,correo,notas] #Falta true o False
-    bdEstudiantes.append(nuevoEstudiante)#bdEstudiante es la lista que tiene todas las listas
-    return "¡Estudiante registrado exitosamente!"#nombre,apellido1,apellido2,genero,carne,correo
-def validarGeneroAux(genero):
+    return registrarEstudiantesAux(nombre,apellido1,apellido2,genero,carne,correo,nota1,nota2,nota3)
+
+def validarGenero(genero):
     """
-    -Funcionamiento: Validar si es 1 a género se le asigna Femenino, si es 2 se le asigna Masculino.
+    -Funcionamiento: Valida si el número es ino de los permitidos.
     -Entradas
-        genero: 1 o 2 según lo que ingreso el usuario.
+    genero(int): 1 o 2 según lo que ingreso el usuario.
     -Salidas
-        genero: Femenino o masculino en función del 1 o 2 que había ingresado el usuario.
+    True o False(booleano): Devuelve False si el número no es 1 o 2 y True si el número es 1 o 2.
     """
-    if genero=="1":
-        genero="Femenino"
+    if genero!=1 and genero!=2:
+        return False
     else:
-        genero=="2"
-        genero="Masculino"
-    return genero
+        return True
 def existenciaCarne(bdEstudiantes,carne):
     """
-    Funcionamiento: Verificar si el carné generado existe ya dentro de la base de datos o no.
+    Funcionamiento: Verificar si el carné ingresado existe ya dentro de la base de datos o no.
     -Entradas
-    bdEstudiantes: Lista con las listas de cada estudiante.
-    carne: Carné generado automáticamente.
+    bdEstudiantes(lista): Lista con las listas de cada estudiante.
+    carne(str): Carné ingresado por el usuario.
     -Salidas
-    True o False: Retorna True si el carné ya existe y False si es un carné único.
+    True o False(booleano): Retorna True si el carné ya existe y False si es un carné único.
     """
     for estudiante in bdEstudiantes:
         if estudiante[2]==carne:
             return True
     return False
 def existenciaCorreo(bdEstudiantes,correo):
-     """
-    Funcionamiento: Verificar si el correo generado existe ya dentro de la base de datos o no.
+    """
+    Funcionamiento: Verificar si el correo ingresado existe ya dentro de la base de datos o no.
     -Entradas
-    bdEstudiantes: Lista con las listas de cada estudiante.
-    correo: Correo generado automáticamente.
+    bdEstudiantes(lista): Lista con las listas de cada estudiante.
+    carne(str): Carné ingresado por el usuario.
     -Salidas
-    True o False: Retorna True si el correo ya existe y False si es un carné único.
+    True o False(booleano): Retorna True si el carné ya existe y False si es un carné único.
     """
     for estudiante in bdEstudiantes:
         if estudiante[3]==correo:
             return True
     return False
 def validarNota1(nota1):
-    if nota1>=0:
+    """
+    -Funcionamiento: Verificar si la nota de la primera evaluación está dentro de los valores permitidos.
+    -Entradas
+    nota1(float): Nota de la primera evaluación.
+    -Salidas
+    True o False(booleano): Devuelve True si la nota está entre 0 y 100 , y False si es negativa o superior a 100.
+    mensaje(str):Indica al usuario que la nota debe estar entre 0 y 100.
+    """
+    if nota1>=0 and nota1<=100:
         return True
     else:
-        print("La nota debe ser mayor o igual a 0.")
+        print("La nota debe ser mayor o igual a 0 y menor o igual que 100.")
         return False
 def validarNota2(nota2):
-    if nota2>=0:
+    """
+    -Funcionamiento: Verificar si la nota de la primera evaluación está dentro de los valores permitidos.
+    -Entradas
+    nota2(float): Nota de la primera evaluación.
+    -Salidas
+    True o False(booleano): Devuelve True si la nota está entre 0 y 100 , y False si es negativa o superior a 100.
+    mensaje(str): Indica al usuario que la nota debe estar entre 0 y 100.
+    """
+    if nota2>=0 and nota2<=100:
         return True
     else:
-        print("La nota debe ser mayor o igual a 0.")
+        print("La nota debe ser mayor o igual a 0 y menor o igual que 100.")
         return False
 def validarNota3(nota3):
-    if nota3>=0:
+    """
+    -Funcionamiento: Verificar si la nota de la primera evaluación está dentro de los valores permitidos.
+    -Entradas
+    nota3(float): Nota de la primera evaluación.
+    -Salidas
+    True o False(booleano): Devuelve True si la nota está entre 0 y 100 , y False si es negativa o superior a 100.
+    mensaje(str): Indica al usuario que la nota debe estar entre 0 y 100.
+    """
+    if nota3>=0 and nota3<=100:
         return True
     else:
-        print("La nota debe ser mayor o igual a 0.")
+        print("La nota debe ser mayor o igual a 0 y menor o igual que 100.")
         return False
 #Programa principal
-print (registrarEstudiante(bdEstudiantes))
+menu()
